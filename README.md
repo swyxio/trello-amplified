@@ -51,16 +51,11 @@ edit board name
 
 ideas
 
-- game where a user does a certain action and when sharing, they can send a link and inside the parameters are the name and score. place ad at the bottom. create web based game
-
 - Personal Mood Board
 - collaborative drawing app. you have a list of colors, a canvas and you're drawing. people with link can see what you're doing and can add stuff.
 if there's authentication, add users' names but for simplicty you can have random names and no Auth
-- feedback app. user can create a feedback form which is accessible by a URL, people can submit like wachtsum.space
+- feedback app. user can create a feedback form which is accessible by a URL, people can submit like wachstum.space
 make it a saas by limiting number of feedbacks you can create
-- app where teacher can create a session and students can join without needing to sign up. students will have a UI that shows suggested actions like smiley face, confused and have a form where they can ask a question. Students will also see a list of questions submitted by other students and they can upvote a question. list automatically reorders based on priority
-teacher can disable people submitting questions. ED tech startup Make app paid The app should be used in classrooms, meetings, and online workshops/lectures. How would you handle spam? How can you make sure that only people you want can submit questions
-display the number of students
 
 
 ```js
@@ -76,9 +71,6 @@ const listData = await API.graphql({
 });
 ```
 
-- fetch data
-- add to context api
-
 - useUser hook to display their username
 - landing page
 
@@ -88,19 +80,3 @@ Features
 - [ ] Edit Card, Edit Board Name, Edit List Name
 - [ ] Dark Mode
 - [ ] Good Responsive Design (add scroll snapping)
-
-Current architecture
-
-Boards
-Context API, set GlobalState for Boards, Shared state between Boards Page and Modal
-useReducer is Used
-
-Board
- get id from URL
-
- create list
- delete list
- add card
- delete card
- draggable lists
- styling

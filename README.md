@@ -1,68 +1,106 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Trello Amplify
 
-## Available Scripts
+Trello Clone built using React + AWS amplify as a Backend
 
-In the project directory, you can run:
+## Tech used
 
-### `yarn start`
+Front-end libraries:
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- React
+- React Router
+  
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Backend:
 
-### `yarn test`
+- AWS amplify auth
+- AWS amplify API
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## getting started
 
-### `yarn build`
+edit board name
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- [x] Display Each user's boards & lists
+- [ ] Boards
+  - [x] Create Board
+  - [x] delete Board
+  - [ ] update board name (have edit mode, display form with the board's name, onSubmit, updateBoard)
+  - [x] route for each board
+  - [x] handle case of wrong board id and route to 404
+  - [ ] Change boards order and save it to backend?
+  - [ ] display notification when board is successfully deleted (probably using dispatch)
+  - [ ] add loading skeleton for board list
+  - [x] Add Board modal ( figure out how to manage state and pass it to the Boards page)
+- [ ] Lists
+  - [x] fetch lists
+  - [x] filter using graphql instead of JS
+  - [x] create new lists
+  - [ ] add loading skeleton  for individual board (kanban)
+- [ ] Cards
+  - [x] fetch cards
+  - [x] create new cards
+  - [ ] update cards
+  - [x] delete cards
+- [ ] add drag and drop (Hard)
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+- [ ] About Page
+- [ ] Write Docs
+- [ ] Add comments
+- [ ] Refactor and make sure I'm using best practices
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- [ ] 404
 
-### `yarn eject`
+ideas
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- game where a user does a certain action and when sharing, they can send a link and inside the parameters are the name and score. place ad at the bottom. create web based game
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Personal Mood Board
+- collaborative drawing app. you have a list of colors, a canvas and you're drawing. people with link can see what you're doing and can add stuff.
+if there's authentication, add users' names but for simplicty you can have random names and no Auth
+- feedback app. user can create a feedback form which is accessible by a URL, people can submit like wachtsum.space
+make it a saas by limiting number of feedbacks you can create
+- app where teacher can create a session and students can join without needing to sign up. students will have a UI that shows suggested actions like smiley face, confused and have a form where they can ask a question. Students will also see a list of questions submitted by other students and they can upvote a question. list automatically reorders based on priority
+teacher can disable people submitting questions. ED tech startup Make app paid The app should be used in classrooms, meetings, and online workshops/lectures. How would you handle spam? How can you make sure that only people you want can submit questions
+display the number of students
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```js
+// filter for board id
 
-## Learn More
+// this doesn't work
+// const listData = await API.graphql(graphqlOperation(listLists), {
+//   variables: { filter: { boardID: { eq: boardID } } },
+// });
+const listData = await API.graphql({
+  query: listLists,
+  variables: { filter: { boardID: { eq: boardID } } },
+});
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- fetch data
+- add to context api
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- useUser hook to display their username
+- landing page
 
-### Code Splitting
+Features
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+- [ ] Home page when user is unauthenticated
+- [ ] Edit Card, Edit Board Name, Edit List Name
+- [ ] Dark Mode
+- [ ] Good Responsive Design (add scroll snapping)
 
-### Analyzing the Bundle Size
+Current architecture
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+Boards
+Context API, set GlobalState for Boards, Shared state between Boards Page and Modal
+useReducer is Used
 
-### Making a Progressive Web App
+Board
+ get id from URL
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+ create list
+ delete list
+ add card
+ delete card
+ draggable lists
+ styling

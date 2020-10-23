@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-trelloamplified-dev-10032-authRole",
+      "UnauthRoleArn": "arn:aws:iam::875531949965:role/amplify-trelloamplified-dev-10032-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::875531949965:role/amplify-trelloamplified-dev-10032-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-trelloamplified-dev-10032-deployment",
+      "UnauthRoleName": "amplify-trelloamplified-dev-10032-unauthRole",
+      "StackName": "amplify-trelloamplified-dev-10032",
+      "StackId": "arn:aws:cloudformation:us-east-1:875531949965:stack/amplify-trelloamplified-dev-10032/bc72c6d0-1195-11eb-bb0f-1261ea05b3bf",
+      "AmplifyAppId": "d2o2bibuy1wl82"
+    },
+    "categories": {
+      "auth": {
+        "trelloamplifiedba552b1e": {}
+      }
+    }
+  }
+}

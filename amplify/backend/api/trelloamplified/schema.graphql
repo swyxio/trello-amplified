@@ -1,0 +1,26 @@
+type Board @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  name: String!
+  lists: [List] @connection(keyName: "byBoard", fields: ["id"])
+}
+
+type List
+  @model
+  @key(name: "byBoard", fields: ["boardID"])
+  @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  title: String!
+  boardID: ID!
+  board: Board @connection(fields: ["boardID"])
+  cards: [Card] @connection(keyName: "byList", fields: ["id"])
+}
+
+type Card
+  @model
+  @key(name: "byList", fields: ["listID", "content"])
+  @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  listID: ID!
+  list: List @connection(fields: ["listID"])
+  content: String!
+}

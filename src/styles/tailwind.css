@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+
+.btn {
+  @apply px-3 py-2 bg-blue-500 text-white flex rounded shadow;
+}
+
+.board-card .board-card-icons {
+  display: none;
+}
+.board-card:hover .board-card-icons,
+.board-card:focus .board-card-icons {
+  display: block;
+}
+.card:focus-within,
+.card:hover {
+  opacity: 1;
+}
+@tailwind utilities;

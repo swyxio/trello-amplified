@@ -1,25 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+import { AmplifyAuthenticator, AmplifySignUp } from "@aws-amplify/ui-react";
+import { Board, Boards, About } from "./pages";
+import { Layout } from "./components";
+import { BoardsProvider } from "./contexts/BoardsContext";
 
+// TODO: Add Landing page and login/signup pages
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Layout>
+        <Switch>
+          <AmplifyAuthenticator>
+            <BoardsProvider>
+              <Route exact={true} path="/boards">
+                <Boards />
+              </Route>
+              <Route path="/board/:id">
+                <Board />
+              </Route>
+              <Route path="/about">
+                <About />
+              </Route>
+              <Route exact={true} path="/">
+                <Redirect to="/boards" />
+              </Route>
+
+              <AmplifySignUp
+                slot="sign-up"
+                formFields={[
+                  { type: "username" },
+                  { type: "password" },
+                  { type: "email" },
+                ]}
+              />
+            </BoardsProvider>
+          </AmplifyAuthenticator>
+        </Switch>
+      </Layout>
+    </Router>
   );
 }
 

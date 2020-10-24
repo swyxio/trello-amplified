@@ -4,11 +4,11 @@ import { deleteList } from "../graphql/mutations";
 import { API, graphqlOperation } from "aws-amplify";
 import { notificationError } from "../utils";
 import { CreateCard, Card } from "../components";
-import { Droppable } from "react-beautiful-dnd";
+import { Draggable, Droppable } from "react-beautiful-dnd";
 import { ACTION_TYPES } from "../actions";
 import { cardsReducer } from "../reducers";
 
-const List = ({ title, listsDispatch, listId, cards }) => {
+const List = ({ title, listsDispatch, listId, cards, index }) => {
   const [cardsState, cardsDispatch] = useReducer(cardsReducer, cards);
 
   const [showOptions, setShowOptions] = useState(false);
@@ -29,11 +29,12 @@ const List = ({ title, listsDispatch, listId, cards }) => {
   };
 
   return (
-    <Droppable droppableId={listId}>
+    <Draggable draggableId={listId} index={index}>
       {(provided) => (
         <div
-          {...provided.droppableProps}
           ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
           className="relative flex flex-col h-auto bg-gray-100 p-5 rounded shadow mr-5  max-w-xl"
         >
           <div className="flex justify-between mb-5">
@@ -66,17 +67,24 @@ const List = ({ title, listsDispatch, listId, cards }) => {
               </div>
             )}
           </div>
-          {cardsState.map(({ id, content }, index) => {
-            return (
-              <Card
-                key={id}
-                index={index}
-                cardId={id}
-                content={content}
-                cardsDispatch={cardsDispatch}
-              />
-            );
-          })}
+          <Droppable droppableId={listId}>
+            {(provided) => (
+              <div ref={provided.innerRef}>
+                {cardsState.map(({ id, content }, index) => {
+                  return (
+                    <Card
+                      key={id}
+                      index={index}
+                      cardId={id}
+                      content={content}
+                      cardsDispatch={cardsDispatch}
+                    />
+                  );
+                })}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
           <CreateCard
             listId={listId}
             cardsDispatch={cardsDispatch}
@@ -85,7 +93,7 @@ const List = ({ title, listsDispatch, listId, cards }) => {
           {provided.placeholder}
         </div>
       )}
-    </Droppable>
+    </Draggable>
   );
 };
 

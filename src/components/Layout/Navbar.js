@@ -10,7 +10,7 @@ const Navbar = () => {
           to="/"
           className="flex title-font font-bold items-center text-gray-900 mb-4 md:mb-0"
         >
-          <span class="ml-3 text-xl">TRELLO-AMPLIFIED</span>
+          <span className="ml-3 text-xl">TRELLO-AMPLIFIED</span>
         </Link>
         <nav className="md:ml-auto flex flex-wrap items-center text-base justify-center">
           <ul className="flex text-xl items-center">

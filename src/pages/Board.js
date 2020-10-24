@@ -4,7 +4,7 @@ import { useParams, useHistory } from "react-router-dom";
 import { getBoard, listLists } from "../graphql/queries";
 import { notificationError } from "../utils";
 import { List, DeleteBoard, CreateList } from "../components";
-import { DragDropContext } from "react-beautiful-dnd";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { ACTION_TYPES } from "../actions";
 import { listsReducer } from "../reducers";
 
@@ -57,7 +57,11 @@ const Board = () => {
   }, []);
 
   const onDragEnd = (result) => {
-    // console.log(result);
+    const { source, destination } = result;
+    // dropped outside the list
+    if (!destination) {
+      return;
+    }
   };
   return (
     <>
@@ -72,24 +76,38 @@ const Board = () => {
             {lists.length === 0 ? (
               <h1>You don't have any lists, start by creating one</h1>
             ) : null}
-            <div className="py-10 flex items-start w-full">
-              {lists.map((list) => {
-                return (
-                  <List
-                    key={list.id}
+            <Droppable
+              droppableId={boardID}
+              type="COLUMN"
+              direction="horizontal"
+            >
+              {(provided) => (
+                <div
+                  className="py-10 flex items-start w-full"
+                  ref={provided.innerRef}
+                >
+                  {lists.map((list, index) => {
+                    return (
+                      <List
+                        index={index}
+                        key={list.id}
+                        listsDispatch={listsDispatch}
+                        title={list.title}
+                        listId={list.id}
+                        cards={list.cards?.items}
+                      />
+                    );
+                  })}
+                  {provided.placeholder}
+                  <CreateList
+                    boardID={boardID}
+                    lists={lists}
                     listsDispatch={listsDispatch}
-                    title={list.title}
-                    listId={list.id}
-                    cards={list.cards?.items}
                   />
-                );
-              })}
-              <CreateList
-                boardID={boardID}
-                lists={lists}
-                listsDispatch={listsDispatch}
-              />
-            </div>
+                </div>
+              )}
+            </Droppable>
+
             <DeleteBoard boardID={boardID} />
           </div>
         </DragDropContext>

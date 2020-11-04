@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { createCard } from "../graphql/mutations";
-import { API, graphqlOperation } from "aws-amplify";
+import { API } from "aws-amplify";
 import { notificationError } from "../utils";
 import { ACTION_TYPES } from "../actions";
 
@@ -16,10 +16,20 @@ const CreateCard = ({ listId, cardsDispatch }) => {
     e.preventDefault();
     try {
       if (!cardFormState.content) return;
-      const cardData = { content: cardFormState.content, listID: listId };
-      const card = await API.graphql(
-        graphqlOperation(createCard, { input: cardData })
-      );
+      const cardData = {
+        content: cardFormState.content,
+        listID: listId,
+      };
+
+      const card = await API.graphql({
+        query: createCard,
+        variables: {
+          input: {
+            content: cardData.content,
+            listID: cardData.listID,
+          },
+        },
+      });
       cardsDispatch({
         type: ACTION_TYPES.ADD_CARD,
         value: card.data.createCard,
@@ -41,7 +51,7 @@ const CreateCard = ({ listId, cardsDispatch }) => {
         className="form-input"
         onChange={(event) => setInput("content", event.target.value)}
         value={cardFormState.content}
-        placeholder="Create new card"
+        placeholder="Create Card +"
       />
     </form>
   );

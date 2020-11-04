@@ -5,5 +5,15 @@ import DeleteBoard from "./DeleteBoard";
 import CreateList from "./CreateList";
 import CreateCard from "./CreateCard";
 import Card from "./Card";
+import Loader from "./Loader";
 
-export { Layout, List, CreateBoard, DeleteBoard, CreateList, CreateCard, Card };
+export {
+  Layout,
+  List,
+  CreateBoard,
+  DeleteBoard,
+  CreateList,
+  CreateCard,
+  Card,
+  Loader,
+};

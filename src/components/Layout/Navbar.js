@@ -4,27 +4,24 @@ import { AmplifySignOut } from "@aws-amplify/ui-react";
 
 const Navbar = () => {
   return (
-    <header>
-      <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+    <header className="bg-gray-900">
+      <div className="container px-20 mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center ">
         <Link
           to="/"
-          className="flex title-font font-bold items-center text-gray-900 mb-4 md:mb-0"
+          className="flex title-font font-bold items-center text-white mb-4 md:mb-0"
         >
           <span className="ml-3 text-xl">TRELLO-AMPLIFIED</span>
         </Link>
-        <nav className="md:ml-auto flex flex-wrap items-center text-base justify-center">
-          <ul className="flex text-xl items-center">
-            <li className="mr-5 hover:text-gray-900">
+        <nav className="md:ml-auto">
+          <ul className="flex text-xl items-center justify-center text-white flex-wrap">
+            <li className="mr-5 hover:text-blue-600">
               <Link to="/about">About</Link>
             </li>
-            <li className="mr-5 hover:text-gray-900">
+            <li className="mr-5 hover:text-blue-600">
               <Link to="/boards">Boards</Link>
             </li>
-            <li className="">
-              <AmplifySignOut
-                className="rounded"
-                button-text="Sign Out"
-              ></AmplifySignOut>
+            <li>
+              <AmplifySignOut buttonText="Sign Out" />
             </li>
           </ul>
         </nav>

@@ -25,7 +25,7 @@ const Card = ({ content, cardId, index, cardsDispatch }) => {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className="flex items-center justify-between shadow bg-white p-5 rounded mb-3 text-left"
+          className="flex items-center justify-between shadow bg-gray-700 text-white p-5 rounded mb-2 text-left"
         >
           <div className="text-lg">
             <p>{content}</p>

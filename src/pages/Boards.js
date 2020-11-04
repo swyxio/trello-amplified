@@ -1,19 +1,21 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import BoardsContext from "../contexts/BoardsContext";
-import { CreateBoard } from "../components";
+import { CreateBoard, Loader } from "../components";
 
 const Boards = () => {
   const { boardsState, boardsDispatch } = useContext(BoardsContext);
   const { boards, status } = boardsState;
   return (
-    <>
-      <div className="container mx-auto">
+    <div className="bg-gray-900 text-white h-screen">
+      <div className="container mx-auto px-10 md:px-24">
         {status === "loading" ? (
-          <h1 className="text-6xl">Loading Boards...</h1>
+          <div className="h-screen w-full flex items-center justify-center">
+            <Loader />
+          </div>
         ) : (
           <>
-            <div className="flex justify-between mt-12">
+            <div className="flex justify-between pt-12">
               <h2 className="text-3xl font-medium">Boards</h2>
               <CreateBoard dispatch={boardsDispatch} />
             </div>
@@ -26,7 +28,7 @@ const Boards = () => {
                     <Link
                       to={`/board/${board.id}`}
                       key={board.id ? board.id : i}
-                      className="text-2xl mr-5 hover:text-blue-500  bg-white shadow rounded p-5 board-card my-5 max-w-xs"
+                      className="w-full max-w-xs text-2xl mr-5 transition duration-100 ease-in-out transform hover:scale-105 hover:bg-gray-800 bg-gray-700 shadow rounded p-5 board-card my-5"
                     >
                       <li>{board.name}</li>
                     </Link>
@@ -37,7 +39,7 @@ const Boards = () => {
           </>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

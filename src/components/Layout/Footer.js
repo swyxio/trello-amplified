@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="w-full mx-auto absolute bottom-0 pb-5">
+    <footer className="w-full text-center absolute bottom-0 pb-5 text-white">
       Built using{" "}
       <a
         className="text-blue-500 hover:text-blue-600"

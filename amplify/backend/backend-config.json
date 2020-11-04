@@ -1,6 +1,6 @@
 {
   "auth": {
-    "trelloamplifiedba552b1e": {
+    "trelloamplifiedafdcdedc": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -8,7 +8,7 @@
     }
   },
   "api": {
-    "trelloamplified": {
+    "API": {
       "service": "AppSync",
       "providerPlugin": "awscloudformation",
       "output": {
@@ -16,7 +16,7 @@
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authtrelloamplifiedba552b1e"
+              "userPoolId": "authtrelloamplifiedafdcdedc"
             }
           },
           "additionalAuthenticationProviders": []

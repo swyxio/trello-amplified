@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "trelloamplifiedba552b1e_identitypool_ba552b1e",
+    "identityPoolName": "trelloamplifiedafdcdedc_identitypool_afdcdedc",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "trelloba552b1e",
-    "userPoolName": "trelloamplifiedba552b1e_userpool_ba552b1e",
+    "resourceNameTruncated": "trelloafdcdedc",
+    "userPoolName": "trelloamplifiedafdcdedc_userpool_afdcdedc",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -28,10 +28,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "trelloba552b1e_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "trelloafdcdedc_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "ba552b1e",
-    "resourceName": "trelloamplifiedba552b1e",
+    "sharedId": "afdcdedc",
+    "resourceName": "trelloamplifiedafdcdedc",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [

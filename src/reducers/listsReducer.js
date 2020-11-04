@@ -29,6 +29,16 @@ const listsReducer = (state, action) => {
     case ACTION_TYPES.DELETE_LIST_ERROR:
       return { ...state, status: "error" };
 
+    case ACTION_TYPES.MOVE_LIST: {
+      const { oldListIndex, newListIndex } = action.value;
+      const newLists = Array.from(state.lists);
+      const [removedList] = newLists.splice(oldListIndex, 1);
+      newLists.splice(newListIndex, 0, removedList);
+      return {
+        ...state,
+        lists: newLists,
+      };
+    }
     default:
       return state;
   }

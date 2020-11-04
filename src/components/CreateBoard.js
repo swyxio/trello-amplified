@@ -35,14 +35,13 @@ const CreateBoard = ({ dispatch }) => {
   return (
     <div>
       <Modal
-        className="mx-auto mt-64  bg-white rounded-lg w-1/2 max-w-md p-5 shadow-lg"
+        className="mx-auto mt-64 bg-gray-900  rounded-lg m-20 md:w-1/2 max-w-md p-5 shadow-lg"
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         contentLabel="Create Board Modal"
+        overlayClassName="bg-gray-800 bg-opacity-75  bottom-0 top-0 left-0 right-0 fixed"
       >
-        <div className="text-gray-900 font-medium text-lg">
-          Create a new board
-        </div>
+        <div className="text-white font-medium text-lg">Create A New Board</div>
         <form onSubmit={handleSubmit} className="flex flex-col my-5">
           <input
             className="form-input mb-5"
@@ -57,7 +56,7 @@ const CreateBoard = ({ dispatch }) => {
         </form>
       </Modal>
       <button className="btn" onClick={openModal}>
-        Create Board
+        Create Board +
       </button>
     </div>
   );

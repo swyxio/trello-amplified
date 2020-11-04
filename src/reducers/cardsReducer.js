@@ -14,6 +14,35 @@ const cardsReducer = (state, action) => {
       state = filteredCards;
       return [...state];
 
+    case ACTION_TYPES.MOVE_CARD: {
+      const {
+        oldCardIndex,
+        newCardIndex,
+        sourceListId,
+        destListId,
+      } = action.payload;
+      // Move within the same list
+      if (sourceListId === destListId) {
+        const newCards = Array.from(state[sourceListId].cards);
+        const [removedCard] = newCards.splice(oldCardIndex, 1);
+        newCards.splice(newCardIndex, 0, removedCard);
+        return {
+          ...state,
+          [sourceListId]: { ...state[sourceListId], cards: newCards },
+        };
+      }
+      // Move card from one list to another
+      const sourceCards = Array.from(state[sourceListId].cards);
+      const [removedCard] = sourceCards.splice(oldCardIndex, 1);
+      const destinationCards = Array.from(state[destListId].cards);
+      destinationCards.splice(newCardIndex, 0, removedCard);
+      return {
+        ...state,
+        [sourceListId]: { ...state[sourceListId], cards: sourceCards },
+        [destListId]: { ...state[destListId], cards: destinationCards },
+      };
+    }
+
     default:
       return state;
   }

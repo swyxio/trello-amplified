@@ -96,14 +96,6 @@ export const listLists = /* GraphQL */ `
           owner
         }
         cards {
-          items {
-            id
-            listID
-            content
-            createdAt
-            updatedAt
-            owner
-          }
           nextToken
         }
         createdAt
@@ -151,6 +143,83 @@ export const listCards = /* GraphQL */ `
     $nextToken: String
   ) {
     listCards(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        listID
+        list {
+          id
+          title
+          boardID
+          createdAt
+          updatedAt
+          owner
+        }
+        content
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const listsByBoard = /* GraphQL */ `
+  query ListsByBoard(
+    $boardID: ID
+    $sortDirection: ModelSortDirection
+    $filter: ModelListFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listsByBoard(
+      boardID: $boardID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        title
+        boardID
+        board {
+          id
+          name
+          createdAt
+          updatedAt
+          owner
+        }
+        cards {
+          items {
+            content
+            id
+          }
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const cardsByList = /* GraphQL */ `
+  query CardsByList(
+    $listID: ID
+    $content: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelCardFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    cardsByList(
+      listID: $listID
+      content: $content
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
       items {
         id
         listID

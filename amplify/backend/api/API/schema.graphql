@@ -6,7 +6,7 @@ type Board @model @auth(rules: [{ allow: owner }]) {
 
 type List
   @model
-  @key(name: "byBoard", fields: ["boardID"])
+  @key(name: "byBoard", fields: ["boardID"], queryField: "listsByBoard")
   @auth(rules: [{ allow: owner }]) {
   id: ID!
   title: String!
@@ -17,7 +17,7 @@ type List
 
 type Card
   @model
-  @key(name: "byList", fields: ["listID", "content"])
+  @key(name: "byList", fields: ["listID", "content"], queryField: "cardsByList")
   @auth(rules: [{ allow: owner }]) {
   id: ID!
   listID: ID!

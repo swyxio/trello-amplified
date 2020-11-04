@@ -15,6 +15,25 @@ module.exports = {
   important: false,
   separator: ":",
   theme: {
+    typography: {
+      default: {
+        css: {
+          color: "#FFF",
+          h1: {
+            color: "#FFF",
+          },
+          h2: {
+            color: "#FFF",
+          },
+          a: {
+            color: "#3182ce",
+            "&:hover": {
+              color: "#2c5282",
+            },
+          },
+        },
+      },
+    },
     screens: {
       sm: "640px",
       md: "768px",
@@ -841,8 +860,5 @@ module.exports = {
     animation: ["responsive"],
   },
   corePlugins: {},
-  plugins: [
-    require("@tailwindcss/typography"),
-    require("@tailwindcss/custom-forms"),
-  ],
+  plugins: [require("@tailwindcss/typography")],
 };

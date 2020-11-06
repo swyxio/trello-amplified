@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { createCard } from "../graphql/mutations";
-import { API } from "aws-amplify";
-import { notificationError } from "../utils";
-import { ACTION_TYPES } from "../actions";
+// import { notificationError } from "../utils";
+import { DataStore } from '@aws-amplify/datastore'
+import { Card } from '../models'
 
-const CreateCard = ({ listId, cardsDispatch }) => {
+
+const CreateCard = ({ listId }) => {
   const cardInitialState = { content: "" };
 
   const [cardFormState, setCardFormState] = useState(cardInitialState);
@@ -14,35 +14,13 @@ const CreateCard = ({ listId, cardsDispatch }) => {
 
   const addCard = async (e) => {
     e.preventDefault();
-    try {
-      if (!cardFormState.content) return;
-      const cardData = {
-        content: cardFormState.content,
-        listID: listId,
-      };
+    if (!cardFormState.content) return;
 
-      const card = await API.graphql({
-        query: createCard,
-        variables: {
-          input: {
-            content: cardData.content,
-            listID: cardData.listID,
-          },
-        },
-      });
-      cardsDispatch({
-        type: ACTION_TYPES.ADD_CARD,
-        value: card.data.createCard,
-      });
-      setCardFormState(cardInitialState);
-    } catch (err) {
-      console.log("error creating card:", err);
-      notificationError("Error creating card");
-      cardsDispatch({
-        type: ACTION_TYPES.ADD_CARD_ERROR,
-        status: "error",
-      });
-    }
+    await DataStore.save(new Card({
+      content: cardFormState.content,
+      listID: listId,
+    }))
+    setCardFormState(cardInitialState)
   };
 
   return (

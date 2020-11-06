@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { API, graphqlOperation } from "aws-amplify";
-import { createBoard } from "../graphql/mutations";
-import { ACTION_TYPES } from "../actions";
+import { DataStore } from '@aws-amplify/datastore'
+import { Board } from '../models'
+
 import Modal from "react-modal";
 
 Modal.setAppElement("#create-board");
 
-const CreateBoard = ({ dispatch }) => {
+const CreateBoard = () => {
   const initialState = "";
   const [newBoardTitle, setNewBoardTitle] = useState(initialState);
   const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -18,15 +18,8 @@ const CreateBoard = ({ dispatch }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const boardName = { name: newBoardTitle };
       setNewBoardTitle(initialState);
-      const newBoard = await API.graphql(
-        graphqlOperation(createBoard, { input: boardName })
-      );
-      dispatch({
-        type: ACTION_TYPES.ADD_BOARD,
-        value: newBoard.data.createBoard,
-      });
+      await DataStore.save(new Board({ name: newBoardTitle }))
       closeModal();
     } catch (err) {
       console.log("error creating board:", err);

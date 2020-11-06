@@ -1,14 +1,11 @@
-import React, { useContext } from "react";
-import BoardsContext from "../contexts/BoardsContext";
-import { API, graphqlOperation } from "aws-amplify";
-import { ACTION_TYPES } from "../actions";
-import { deleteBoard } from "../graphql/mutations";
+import React from "react";
+import { DataStore } from '@aws-amplify/datastore'
+import { Board } from '../models'
 import { useHistory } from "react-router-dom";
-import { notificationError } from "../utils";
+// import { notificationError } from "../utils";
 import { confirmAlert } from "react-confirm-alert";
 
 const DeleteBoard = ({ boardID }) => {
-  const { boardsDispatch } = useContext(BoardsContext);
   const history = useHistory();
 
   const handleDelete = () => {
@@ -39,17 +36,11 @@ const DeleteBoard = ({ boardID }) => {
   };
 
   const removeBoard = async () => {
-    try {
-      await API.graphql(
-        graphqlOperation(deleteBoard, { input: { id: boardID } })
-      );
-      boardsDispatch({ type: ACTION_TYPES.DELETE_BOARD, value: boardID });
-      history.push("/boards");
-    } catch (err) {
-      console.log("error deleting board:", err);
-      notificationError("Error deleting board");
-    }
+    const todelete = await DataStore.query(Board, boardID);
+    DataStore.delete(todelete); // or directly pass in instance
+    history.push("/boards");
   };
+
   return (
     <button className="btn bg-red-600" onClick={() => handleDelete()}>
       Delete Board

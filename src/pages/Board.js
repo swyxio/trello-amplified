@@ -1,59 +1,50 @@
-import React, { useState, useEffect, useReducer } from "react";
-import { API, graphqlOperation } from "aws-amplify";
-import { useParams, useHistory, Link } from "react-router-dom";
-import { getBoard, listsByBoard } from "../graphql/queries";
-import { notificationError } from "../utils";
-import { List, DeleteBoard, CreateList, Loader } from "../components";
+import React, { useState } from "react";
+import { useParams, 
+  // useHistory,
+   Link } from "react-router-dom";
+// import { notificationError } from "../utils";
+import { List, DeleteBoard, CreateList, 
+  // Loader
+ } from "../components";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { ACTION_TYPES } from "../actions";
-import { listsReducer } from "../reducers";
+import { List as ListModel, Board as BoardModel } from '../models'
+import { DataStore } from '@aws-amplify/datastore'
+
+async function fetchList(boardID, setLists) {
+  const _Lists = (await DataStore.query(ListModel)).filter(list => {
+    return list.board.id === boardID
+  })
+  // const _Lists = await DataStore.query(ListModel, c => c.board({id: boardID}))
+  // // TODO
+  // if (!board.data.getBoard) {
+  //   history.push("/NotFound");
+  // }
+  console.log('todo check ', {_Lists})
+  setLists(_Lists)
+}
+async function fetchBoard(boardID, setBoard) {
+  const _Board = await DataStore.query(BoardModel, boardID)
+  setBoard(_Board)
+}
 
 const Board = () => {
-  const initialState = {
-    lists: [],
-    status: "idle",
-  };
-  const [listsState, listsDispatch] = useReducer(listsReducer, initialState);
-
-  const { lists, status } = listsState;
-
+  const [lists, setLists] = React.useState([])
   const { id } = useParams();
   const boardID = id;
-  const history = useHistory();
-
+  // const history = useHistory();
   const [board, setBoard] = useState({});
 
-  useEffect(() => {
-    const fetchLists = async () => {
-      try {
-        listsDispatch({ type: ACTION_TYPES.GET_LISTS });
+  React.useEffect(() => {
+    fetchList(boardID, setLists)
+    const subscription = DataStore.observe(ListModel).subscribe(fetchList)
+    return () => subscription.unsubscribe()
+  }, [boardID])
 
-        const listData = await API.graphql(
-          graphqlOperation(listsByBoard, { boardID: boardID })
-        );
-        const lists = listData.data.listsByBoard.items;
-        listsDispatch({ type: ACTION_TYPES.GET_LISTS_SUCCESS, value: lists });
-      } catch (err) {
-        console.log(err);
-        notificationError("error fetching lists");
-        listsDispatch({ type: ACTION_TYPES.GET_LISTS_ERROR });
-      }
-    };
-
-    // check if board exists, then routes to a 404
-    const fetchBoard = async () => {
-      const board = await API.graphql(
-        graphqlOperation(getBoard, { id: boardID })
-      );
-      setBoard(board);
-      listsDispatch({ type: ACTION_TYPES.GET_FILTERED_LISTS, value: boardID });
-      if (!board.data.getBoard) {
-        history.push("/NotFound");
-      }
-    };
-    fetchBoard();
-    fetchLists();
-  }, []);
+  React.useEffect(() => {
+    fetchBoard(boardID, setBoard)
+    const subscription = DataStore.observe(BoardModel).subscribe(fetchBoard)
+    return () => subscription.unsubscribe()
+  }, [boardID])
 
   const onDragEnd = (result) => {
     const { destination, source, type } = result;
@@ -65,14 +56,15 @@ const Board = () => {
     if (type === "COLUMN") {
       // Prevent update if nothing has changed
       if (source.index !== destination.index) {
-        listsDispatch({
-          type: "MOVE_LIST",
-          value: {
-            oldListIndex: source.index,
-            newListIndex: destination.index,
-            boardId: source.droppableId,
-          },
-        });
+        alert('to be implemented')
+        // listsDispatch({
+        //   type: "MOVE_LIST",
+        //   value: {
+        //     oldListIndex: source.index,
+        //     newListIndex: destination.index,
+        //     boardId: source.droppableId,
+        //   },
+        // });
       }
       return;
     }
@@ -95,11 +87,11 @@ const Board = () => {
   };
   return (
     <div className="bg-gray-900 text-white">
-      {status === "loading" ? (
+      {/* {status === "loading" ? (
         <div className="h-screen w-full flex items-center justify-center">
           <Loader />
         </div>
-      ) : (
+      ) : ( */}
         <DragDropContext onDragEnd={onDragEnd}>
           <div className="py-10 pl-10 md:px-24 mx-auto container h-screen">
             <h1 className="text-3xl font-medium my-5">
@@ -124,12 +116,12 @@ const Board = () => {
                   ref={provided.innerRef}
                 >
                   {lists.map((list, index) => {
+                    console.log('1', {list})
                     return (
                       <List
                         onDragEnd={onDragEnd}
                         index={index}
                         key={list.id}
-                        listsDispatch={listsDispatch}
                         title={list.title}
                         listId={list.id}
                         cards={list.cards?.items}
@@ -140,7 +132,6 @@ const Board = () => {
                   <CreateList
                     boardID={boardID}
                     lists={lists}
-                    listsDispatch={listsDispatch}
                   />
                 </div>
               )}
@@ -148,7 +139,7 @@ const Board = () => {
             <DeleteBoard boardID={boardID} />
           </div>
         </DragDropContext>
-      )}
+      {/* )} */}
     </div>
   );
 };

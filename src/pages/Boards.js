@@ -1,26 +1,38 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import BoardsContext from "../contexts/BoardsContext";
-import { CreateBoard, Loader } from "../components";
+import { CreateBoard, 
+  // Loader
+ } from "../components";
+import { DataStore } from '@aws-amplify/datastore'
+import { Board } from '../models'
 
 const Boards = () => {
-  const { boardsState, boardsDispatch } = useContext(BoardsContext);
-  const { boards, status } = boardsState;
+  const [boards, setBoards] = React.useState(null)
+  React.useEffect(() => {
+    fetchBoards()
+    const subscription = DataStore.observe(Board).subscribe(fetchBoards)
+    return () => subscription.unsubscribe()
+  }, [])
+  async function fetchBoards() {
+    const _Boards = await DataStore.query(Board)
+    setBoards(_Boards)
+  }
+  console.log({boards})
   return (
     <div className="bg-gray-900 text-white h-screen">
       <div className="container mx-auto px-10 md:px-24">
-        {status === "loading" ? (
+        {/* {status === "loading" ? (
           <div className="h-screen w-full flex items-center justify-center">
             <Loader />
           </div>
         ) : (
-          <>
+          <> */}
             <div className="flex justify-between pt-12">
               <h2 className="text-3xl font-medium">Boards</h2>
-              <CreateBoard dispatch={boardsDispatch} />
+              <CreateBoard />
             </div>
             <ul className="flex flex-wrap">
-              {boards.length === 0 ? (
+              {(boards === null || boards.length === 0) ? (
                 <h2 className="text-xl">You haven't create any boards yet</h2>
               ) : (
                 boards.map((board, i) => {
@@ -36,8 +48,8 @@ const Boards = () => {
                 })
               )}
             </ul>
-          </>
-        )}
+          {/* </>
+        )} */}
       </div>
     </div>
   );

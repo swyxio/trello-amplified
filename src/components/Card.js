@@ -1,21 +1,13 @@
 import React from "react";
-import { API, graphqlOperation } from "aws-amplify";
-import { deleteCard } from "../graphql/mutations";
-import { notificationError } from "../utils";
+import { DataStore } from '@aws-amplify/datastore'
+import { Card as CardModel } from '../models'
+// import { notificationError } from "../utils";
 import { Draggable } from "react-beautiful-dnd";
-import { ACTION_TYPES } from "../actions";
 
-const Card = ({ content, cardId, index, cardsDispatch }) => {
+const Card = ({ content, cardId, index }) => {
   const removeCard = async (cardId) => {
-    try {
-      await API.graphql(
-        graphqlOperation(deleteCard, { input: { id: cardId } })
-      );
-      cardsDispatch({ type: ACTION_TYPES.DELETE_CARD, value: cardId });
-    } catch (err) {
-      console.log("error deleting card:", err);
-      notificationError("Error deleting card");
-    }
+    const todelete = await DataStore.query(CardModel, cardId);
+    DataStore.delete(todelete); // or directly pass in instance
   };
 
   return (

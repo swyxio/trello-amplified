@@ -8,7 +8,6 @@ import {
 import { AmplifyAuthenticator, AmplifySignUp } from "@aws-amplify/ui-react";
 import { Board, Boards, About } from "./pages";
 import { Layout } from "./components";
-import { BoardsProvider } from "./contexts/BoardsContext";
 
 // TODO: Add Landing page and login/signup pages
 function App() {
@@ -17,29 +16,27 @@ function App() {
       <Layout>
         <Switch>
           <AmplifyAuthenticator>
-            <BoardsProvider>
-              <Route exact={true} path="/boards">
-                <Boards />
-              </Route>
-              <Route path="/board/:id">
-                <Board />
-              </Route>
-              <Route path="/about">
-                <About />
-              </Route>
-              <Route exact={true} path="/">
-                <Redirect to="/boards" />
-              </Route>
+            <Route exact={true} path="/boards">
+              <Boards />
+            </Route>
+            <Route path="/board/:id">
+              <Board />
+            </Route>
+            <Route path="/about">
+              <About />
+            </Route>
+            <Route exact={true} path="/">
+              <Redirect to="/boards" />
+            </Route>
 
-              <AmplifySignUp
-                slot="sign-up"
-                formFields={[
-                  { type: "username" },
-                  { type: "password" },
-                  { type: "email" },
-                ]}
-              />
-            </BoardsProvider>
+            <AmplifySignUp
+              slot="sign-up"
+              formFields={[
+                { type: "username" },
+                { type: "password" },
+                { type: "email" },
+              ]}
+            />
           </AmplifyAuthenticator>
         </Switch>
       </Layout>

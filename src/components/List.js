@@ -1,31 +1,23 @@
-import React, { useState, useRef, useReducer } from "react";
+import React, { useState, useRef, 
+  // useReducer
+ } from "react";
 import { useOnClickOutside } from "../hooks";
-import { deleteList } from "../graphql/mutations";
-import { API, graphqlOperation } from "aws-amplify";
-import { notificationError } from "../utils";
+// import { notificationError } from "../utils";
 import { CreateCard, Card } from "../components";
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import { ACTION_TYPES } from "../actions";
-import { cardsReducer } from "../reducers";
+import { DataStore } from '@aws-amplify/datastore'
+import { List as ListModel } from '../models'
 
-const List = ({ title, listsDispatch, listId, cards, index }) => {
-  const [cardsState, cardsDispatch] = useReducer(cardsReducer, cards);
+const List = ({ title, listId, cards, index }) => {
   const [showOptions, setShowOptions] = useState(false);
   const ref = useRef();
   useOnClickOutside(ref, () => setShowOptions(false));
 
   const removeList = async (listId) => {
-    try {
-      listsDispatch({ type: ACTION_TYPES.DELETE_LIST });
-      await API.graphql(
-        graphqlOperation(deleteList, { input: { id: listId } })
-      );
-      listsDispatch({ type: ACTION_TYPES.DELETE_LIST_SUCCESS, value: listId });
-    } catch (err) {
-      console.log("error deleting list:", err);
-      notificationError("Error deleting list");
-    }
+    const todelete = await DataStore.query(ListModel, listId);
+    DataStore.delete(todelete); // or directly pass in instance
   };
+  console.log({cards})
 
   return (
     <Draggable draggableId={listId} index={index}>
@@ -67,14 +59,13 @@ const List = ({ title, listsDispatch, listId, cards, index }) => {
             <Droppable droppableId={listId} type="CARD">
               {(provided) => (
                 <div ref={provided.innerRef}>
-                  {cardsState.map(({ id, content }, index) => {
+                  {cards && cards.map(({ id, content }, index) => {
                     return (
                       <Card
                         key={id}
                         index={index}
                         cardId={id}
                         content={content}
-                        cardsDispatch={cardsDispatch}
                       />
                     );
                   })}
@@ -84,8 +75,7 @@ const List = ({ title, listsDispatch, listId, cards, index }) => {
             </Droppable>
             <CreateCard
               listId={listId}
-              cardsDispatch={cardsDispatch}
-              cards={cardsState}
+              cards={cards}
             />
             {provided.placeholder}
           </div>
@@ -96,9 +86,3 @@ const List = ({ title, listsDispatch, listId, cards, index }) => {
 };
 
 export default List;
-
-// <div className="mt-8" ref={ref}>
-
-//               </div>
-
-// className="text-left px-4 py-2 text-sm text-gray-800 absolute right-0  w-48 bg-white hover:bg-gray-200 rounded-md overflow-hidden shadow-xl z-20"

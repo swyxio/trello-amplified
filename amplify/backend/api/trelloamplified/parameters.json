@@ -1,10 +1,10 @@
 {
-    "AppSyncApiName": "API",
+    "AppSyncApiName": "trelloamplified",
     "DynamoDBBillingMode": "PAY_PER_REQUEST",
     "DynamoDBEnableServerSideEncryption": false,
     "AuthCognitoUserPoolId": {
         "Fn::GetAtt": [
-            "authtrelloamplifiedafdcdedc",
+            "authtrelloamplified51551e58",
             "Outputs.UserPoolId"
         ]
     }
